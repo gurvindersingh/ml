@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ssh-client
+  namespace: ml
+  labels:
+    app: ssh-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ssh-client
+  template:
+    metadata:
+      labels:
+        app: ssh-client
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: 2354cd00-bc3b-4439-b436-b9b089425b4a
+      containers:
+      - name: ssh-client
+        image: gurvin/ssh-client
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 1024m
+            memory: 500Mi
+        volumeMounts:
+          - name: data
+            mountPath: /data:rslave
